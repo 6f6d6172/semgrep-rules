@@ -54,7 +54,7 @@ app.get('/3', function (req, res) {
 app.get('/2', function (req, res) {
     var user = { user: req.query.name };
     // ruleid: direct-response-write
-    res.send('Response</br>' + user.name);
+    res.send('Response</br>' + user.user);
 });
 
 
@@ -131,6 +131,15 @@ app.get('/xss', function (req, res) {
     // ruleid: direct-response-write
     res.write('Response</br>' + html);
 });
+
+const jsonRouter = express.Router();
+jsonRouter.use(express.json());
+jsonRouter.get('/noxss-json', function (req, res) {
+    var name = req.query.name;
+    // ok: direct-response-write
+    res.write({ name });
+});
+app.use(jsonRouter);
 
 // For https://github.com/returntocorp/semgrep-rules/issues/2872
 app.post(
